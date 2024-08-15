@@ -1,0 +1,15 @@
+package components
+
+import "github.com/asayuki/gopherreads/models"
+
+templ Navbar(directories models.Directory) {
+    <nav>
+        <ul>
+        for _, item := range directories.Directories {
+            <li>
+                { item.Name }
+            </li>
+        }
+        </ul>
+    </nav>
+}

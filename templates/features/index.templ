@@ -1,0 +1,8 @@
+package features
+
+import "github.com/asayuki/gopherreads/models"
+import "github.com/asayuki/gopherreads/templates/components"
+
+templ IndexView(directories *models.Directory) {
+	@components.Navbar(*directories)
+}
