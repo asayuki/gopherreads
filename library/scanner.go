@@ -27,6 +27,7 @@ func Scanner(rootpath string) ([]*models.Book, error) {
 			for _, ext := range []string{".epub", ".zip", ".rar", ".cbz"} {
 				if strings.EqualFold(filepath.Ext(info.Name()), ext) {
 					name := info.Name()
+					// fmt.Println(strings.TrimPrefix(path, rootpath))
 					books = append(books, &models.Book{
 						Name:     strings.TrimSuffix(name, filepath.Ext(name)),
 						Path:     strings.TrimPrefix(strings.TrimSuffix(path, name), rootpath),
@@ -58,6 +59,7 @@ func Scanner(rootpath string) ([]*models.Book, error) {
 
 			if onlyImages {
 				name := info.Name()
+				// (strings.TrimPrefix(path, rootpath))
 				books = append(books, &models.Book{
 					Name:     name,
 					Path:     strings.TrimPrefix(strings.TrimSuffix(path, name), rootpath),

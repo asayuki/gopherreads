@@ -11,8 +11,11 @@ func RegisterRoutes(
 	router *http.ServeMux,
 	library stores.LibraryStore,
 	directories *models.Directory,
+	cache map[string]*models.Cache,
 ) {
-	handler := InitHandler(&library, directories)
+	handler := InitHandler(&library, directories, cache)
 
-	router.HandleFunc("GET /", handler.indexView)
+	//router.HandleFunc("GET /", handler.pageView)
+	//router.HandleFunc("GET /{page}", handler.pageView)
+	router.Handle("/", http.HandlerFunc(handler.pageView))
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -31,7 +32,13 @@ func main() {
 
 	router := http.NewServeMux()
 
-	routes.RegisterRoutes(router, *libraryStore, &directories)
+	// Some static
+	router.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(404)
+	})
+
+	// Register other routes
+	routes.RegisterRoutes(router, *libraryStore, &directories, cache)
 
 	go func() {
 		t := time.NewTicker(1 * time.Minute)
@@ -44,10 +51,29 @@ func main() {
 		}
 	}()
 
+	fmt.Println("Top-level directories:")
+	topDirs := directories.GetDirectories("/")
+	for _, dir := range topDirs {
+		fmt.Println(dir.Path, dir.Name)
+	}
+
+	fmt.Println("\nSubdirectories under 'Programming':")
+	progDirs := directories.GetDirectories("/Programming")
+	for _, dir := range progDirs {
+		fmt.Println(dir.Path, dir.Name)
+	}
+
+	fmt.Println("\nSubdirectories under 'Programming':")
+	goDirs := directories.GetDirectories("/Programming/Go")
+	for _, dir := range goDirs {
+		fmt.Println(dir.Path, dir.Name)
+	}
+
 	server := http.Server{
 		Addr:    config.Envs.HTTPAddr,
 		Handler: router,
 	}
 
+	fmt.Printf("Server started on: http://%v", config.Envs.HTTPAddr)
 	server.ListenAndServe()
 }

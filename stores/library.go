@@ -16,7 +16,6 @@ func NewLibraryStore(db *sql.DB) *LibraryStore {
 }
 
 func (s *LibraryStore) GetBookByPath(path string) (*models.Book, error) {
-	fmt.Println(path)
 	rows := s.db.QueryRow(`
 		SELECT
 			b.id,
@@ -44,6 +43,41 @@ func (s *LibraryStore) GetBookByPath(path string) (*models.Book, error) {
 	}
 
 	return book, nil
+}
+
+func (s *LibraryStore) GetBooksByPath(path string) ([]*models.Book, error) {
+	rows, err := s.db.Query(`
+		SELECT
+			b.id,
+			b.path,
+			b.full_path,
+			b.name,
+			b.type,
+			b.scanned_at,
+			b.last_scanned_at,
+			COALESCE(bm.title, '') as title,
+			COALESCE(bm.description, '') as description,
+			COALESCE(bm.cover, '') as cover,
+			COALESCE(bm.genre, '') as genre,
+			COALESCE(bm.author, '') as author
+		FROM books b
+		LEFT JOIN bookmeta bm on b.id = bm.book_id
+		WHERE b.path = ?
+	`, path)
+
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	books, err := scanBooks(rows)
+
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return books, nil
 }
 
 func (s *LibraryStore) InsertBook(book models.Book) (int64, error) {
@@ -105,26 +139,30 @@ func scanBook(row *sql.Row, book *models.Book) error {
 	return err
 }
 
-func scanBooks(rows *sql.Rows) (*models.Book, error) {
-	book := new(models.Book)
-	err := rows.Scan(
-		&book.ID,
-		&book.Path,
-		&book.FullPath,
-		&book.Name,
-		&book.Type,
-		&book.ScannedAt,
-		&book.LastScannedAt,
-		&book.Metadata.Author,
-		&book.Metadata.Cover,
-		&book.Metadata.Description,
-		&book.Metadata.Genre,
-		&book.Metadata.Title,
-	)
+func scanBooks(rows *sql.Rows) ([]*models.Book, error) {
+	var books []*models.Book
+	for rows.Next() {
+		var book models.Book
+		err := rows.Scan(
+			&book.ID,
+			&book.Path,
+			&book.FullPath,
+			&book.Name,
+			&book.Type,
+			&book.ScannedAt,
+			&book.LastScannedAt,
+			&book.Metadata.Author,
+			&book.Metadata.Cover,
+			&book.Metadata.Description,
+			&book.Metadata.Genre,
+			&book.Metadata.Title,
+		)
+		if err != nil {
+			return nil, err
+		}
 
-	if err != nil {
-		return nil, err
+		books = append(books, &book)
 	}
 
-	return book, nil
+	return books, nil
 }

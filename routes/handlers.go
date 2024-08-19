@@ -1,9 +1,13 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
+	"path/filepath"
+	"strings"
 
 	"github.com/a-h/templ"
+	"github.com/asayuki/gopherreads/config"
 	"github.com/asayuki/gopherreads/models"
 	"github.com/asayuki/gopherreads/stores"
 	"github.com/asayuki/gopherreads/templates"
@@ -13,19 +17,44 @@ import (
 type Handler struct {
 	library     *stores.LibraryStore
 	directories *models.Directory
+	cache       map[string]*models.Cache
 }
 
-func InitHandler(library *stores.LibraryStore, directories *models.Directory) *Handler {
-	return &Handler{library, directories}
+func InitHandler(library *stores.LibraryStore, directories *models.Directory, cache map[string]*models.Cache) *Handler {
+	return &Handler{library, directories, cache}
 }
 
-func (h *Handler) indexView(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) pageView(w http.ResponseWriter, r *http.Request) {
 	var t templ.Component
+
+	page := r.URL.Path
+	menu := h.directories.GetDirectories(page)
+
+	fmt.Println(fixURLSlash(page))
+	fmt.Println(filepath.Clean(page))
+
+	books, err := h.library.GetBooksByPath(fixURLSlash(page))
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	if r.Header.Get("HX-Request") == "true" {
-		t = features.IndexView(h.directories)
+		t = features.PageView(menu, books)
 	} else {
-		t = features.Base(features.IndexView(h.directories))
+		t = features.Base(features.PageView(menu, books))
 	}
 
 	templates.Render(w, r, t, 200)
+}
+
+func fixURLSlash(url string) string {
+	if !strings.HasSuffix(url, "/") {
+		url += "/"
+	}
+
+	if strings.HasSuffix(config.Envs.LibraryPath, "/") {
+		url = strings.TrimPrefix(url, "/")
+	}
+
+	return url
 }

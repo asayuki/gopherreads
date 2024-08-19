@@ -2,12 +2,16 @@ package components
 
 import "github.com/asayuki/gopherreads/models"
 
-templ Navbar(directories models.Directory) {
+func getDirectoryLink(directory models.DirectoryItem) string {
+    return ""
+}
+
+templ Navbar(directories []models.DirectoryItem) {
     <nav>
         <ul>
-        for _, item := range directories.Directories {
+        for _, item := range directories {
             <li>
-                { item.Name }
+                <a hx-get={ item.Path } hx-target="#body" hx-push-url="true">{ item.Name }</a>
             </li>
         }
         </ul>

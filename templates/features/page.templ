@@ -1,0 +1,16 @@
+package features
+
+import "github.com/asayuki/gopherreads/models"
+import "github.com/asayuki/gopherreads/templates/components"
+
+templ PageView(menu []models.DirectoryItem, books []*models.Book) {
+	<main>
+		@components.Navbar(menu)
+	</main>
+
+	<ul>
+		for _, book := range books {
+			<li>{ book.Name }</li>
+		}
+	</ul>
+}
