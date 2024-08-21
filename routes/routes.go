@@ -18,4 +18,5 @@ func RegisterRoutes(
 	//router.HandleFunc("GET /", handler.pageView)
 	//router.HandleFunc("GET /{page}", handler.pageView)
 	router.Handle("/", http.HandlerFunc(handler.pageView))
+	router.Handle("/open", http.HandlerFunc(handler.openBook))
 }

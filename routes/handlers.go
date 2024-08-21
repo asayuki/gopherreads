@@ -3,7 +3,6 @@ package routes
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
 	"strings"
 
 	"github.com/a-h/templ"
@@ -30,9 +29,6 @@ func (h *Handler) pageView(w http.ResponseWriter, r *http.Request) {
 	page := r.URL.Path
 	menu := h.directories.GetDirectories(page)
 
-	fmt.Println(fixURLSlash(page))
-	fmt.Println(filepath.Clean(page))
-
 	books, err := h.library.GetBooksByPath(fixURLSlash(page))
 	if err != nil {
 		fmt.Println(err)
@@ -45,6 +41,17 @@ func (h *Handler) pageView(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templates.Render(w, r, t, 200)
+}
+
+func (h *Handler) openBook(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Query().Get("path")
+	fmt.Println(path)
+	book, err := h.library.GetBookByPath(path)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(book)
 }
 
 func fixURLSlash(url string) string {

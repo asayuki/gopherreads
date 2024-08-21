@@ -10,7 +10,9 @@ templ PageView(menu []models.DirectoryItem, books []*models.Book) {
 
 	<ul>
 		for _, book := range books {
-			<li>{ book.Name }</li>
+			<li>
+				<a hx-get={ "/open?path=" + book.FullPath } hx-target="#body" hx-push-url="true">{ book.Name }</a>
+			</li>
 		}
 	</ul>
 }
