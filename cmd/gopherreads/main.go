@@ -9,6 +9,7 @@ import (
 	"github.com/asayuki/gopherreads/config"
 	"github.com/asayuki/gopherreads/database"
 	"github.com/asayuki/gopherreads/library"
+	"github.com/asayuki/gopherreads/middleware"
 	"github.com/asayuki/gopherreads/models"
 	"github.com/asayuki/gopherreads/routes"
 	"github.com/asayuki/gopherreads/stores"
@@ -32,12 +33,12 @@ func main() {
 
 	router := http.NewServeMux()
 
-	// Some static
-	router.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(404)
-	})
+	// Serve static files
+	fs := http.FileServer(http.Dir("./static"))
+	router.Handle("/static/", http.StripPrefix("/static/", fs))
+	router.Handle("/favicon.ico", http.FileServer(http.Dir("./static")))
 
-	// Register other routes
+	// Register router
 	routes.RegisterRoutes(router, *libraryStore, &directories, cache)
 
 	go func() {
@@ -51,27 +52,13 @@ func main() {
 		}
 	}()
 
-	fmt.Println("Top-level directories:")
-	topDirs := directories.GetDirectories("/")
-	for _, dir := range topDirs {
-		fmt.Println(dir.Path, dir.Name)
-	}
-
-	fmt.Println("\nSubdirectories under 'Programming':")
-	progDirs := directories.GetDirectories("/Programming")
-	for _, dir := range progDirs {
-		fmt.Println(dir.Path, dir.Name)
-	}
-
-	fmt.Println("\nSubdirectories under 'Programming':")
-	goDirs := directories.GetDirectories("/Programming/Go")
-	for _, dir := range goDirs {
-		fmt.Println(dir.Path, dir.Name)
-	}
+	middlewares := middleware.CreateStack(
+		middleware.Logging,
+	)
 
 	server := http.Server{
 		Addr:    config.Envs.HTTPAddr,
-		Handler: router,
+		Handler: middlewares(router),
 	}
 
 	fmt.Printf("Server started on: http://%v", config.Envs.HTTPAddr)

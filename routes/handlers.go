@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/a-h/templ"
 	"github.com/asayuki/gopherreads/config"
 	"github.com/asayuki/gopherreads/models"
 	"github.com/asayuki/gopherreads/stores"
@@ -23,7 +22,11 @@ func InitHandler(library *stores.LibraryStore, directories *models.Directory, ca
 	return &Handler{library, directories, cache}
 }
 
-func (h *Handler) pageView(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) dashboardView(w http.ResponseWriter, r *http.Request) {
+	templates.Render(w, r, features.Base(), 200)
+}
+
+/*func (h *Handler) pageView(w http.ResponseWriter, r *http.Request) {
 	var t templ.Component
 
 	page := r.URL.Path
@@ -41,7 +44,7 @@ func (h *Handler) pageView(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templates.Render(w, r, t, 200)
-}
+}*/
 
 func (h *Handler) openBook(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Query().Get("path")
