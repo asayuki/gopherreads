@@ -6,6 +6,7 @@ import (
 	"github.com/asayuki/gopherreads/models"
 	"github.com/asayuki/gopherreads/stores"
 	"github.com/asayuki/gopherreads/templates/pages"
+	"github.com/asayuki/gopherreads/templates/layout"
 )
 
 type LibraryHandler struct {
@@ -20,6 +21,10 @@ func InitLibraryHandler(library *stores.LibraryStore, user *stores.UserStore, ca
 		user,
 		cache,
 	}
+}
+
+func (h *LibraryHandler) BaseView(w http.ResponseWriter, r *http.Request) {
+	render(w, r, layout.Base(), 200)
 }
 
 func (h *LibraryHandler) CurrentlyReadingView(w http.ResponseWriter, r *http.Request) {

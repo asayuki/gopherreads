@@ -24,6 +24,7 @@ func main() {
 	}
 
 	libraryStore := stores.NewLibraryStore(db)
+	userStore := stores.NewUserStore(db)
 
 	directories := models.Directory{
 		Path: "/",

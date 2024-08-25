@@ -13,7 +13,7 @@ type UserStore struct {
 }
 
 func NewUserStore(db *sql.DB) *UserStore {
-	return &UserStore{}
+	return &UserStore{db}
 }
 
 func (s *UserStore) CreateUser(user models.UserAuth) error {

@@ -1,5 +1,5 @@
 package routes
-
+/*
 import (
 	"fmt"
 	"net/http"
@@ -44,7 +44,7 @@ func (h *Handler) dashboardView(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templates.Render(w, r, t, 200)
-}*/
+}*
 
 func (h *Handler) openBook(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Query().Get("path")
@@ -68,3 +68,4 @@ func fixURLSlash(url string) string {
 
 	return url
 }
+*/
