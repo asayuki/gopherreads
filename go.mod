@@ -9,7 +9,7 @@ require (
 )
 
 require (
-	github.com/a-h/templ v0.2.747 // indirect
+	github.com/a-h/templ v0.2.771 // indirect
 	github.com/go-playground/form v3.1.4+incompatible
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
