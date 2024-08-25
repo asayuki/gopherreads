@@ -40,7 +40,7 @@ func main() {
 	router.Handle("/favicon.ico", http.FileServer(http.Dir("./static")))
 
 	// Register router
-	routes.RegisterRoutes(router, *libraryStore, &directories, cache)
+	routes.RegisterRoutes(router, *libraryStore, *userStore, cache)
 
 	go func() {
 		t := time.NewTicker(1 * time.Minute)
