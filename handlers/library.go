@@ -3,10 +3,11 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/a-h/templ"
 	"github.com/asayuki/gopherreads/models"
 	"github.com/asayuki/gopherreads/stores"
-	"github.com/asayuki/gopherreads/templates/pages"
 	"github.com/asayuki/gopherreads/templates/layout"
+	"github.com/asayuki/gopherreads/templates/pages"
 )
 
 type LibraryHandler struct {
@@ -24,15 +25,36 @@ func InitLibraryHandler(library *stores.LibraryStore, user *stores.UserStore, ca
 }
 
 func (h *LibraryHandler) BaseView(w http.ResponseWriter, r *http.Request) {
-	render(w, r, layout.Base(), 200)
+	var t templ.Component
+	if r.Header.Get("HX-Request") == "true" {
+		t = pages.CurrentlyReadingView()
+	} else {
+		t = layout.Base(pages.CurrentlyReadingView())
+	}
+
+	render(w, r, t, http.StatusOK)
 }
 
 func (h *LibraryHandler) CurrentlyReadingView(w http.ResponseWriter, r *http.Request) {
-	render(w, r, pages.CurrentlyReadingView(), 200)
+	var t templ.Component
+	if r.Header.Get("HX-Request") == "true" {
+		t = pages.CurrentlyReadingView()
+	} else {
+		t = layout.Base(pages.CurrentlyReadingView())
+	}
+
+	render(w, r, t, http.StatusOK)
 }
 
 func (h *LibraryHandler) LibraryView(w http.ResponseWriter, r *http.Request) {
+	var t templ.Component
+	if r.Header.Get("HX-Request") == "true" {
+		t = pages.LibraryView()
+	} else {
+		t = layout.Base(pages.LibraryView())
+	}
 
+	render(w, r, t, http.StatusOK)
 }
 
 func (h *LibraryHandler) OpenBook() {

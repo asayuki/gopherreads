@@ -1,0 +1,43 @@
+theme-toggle {
+    --toggle-width: 54px;
+    --toogle-height: 30px;
+    --celestial-spacing: 3px;
+
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    label {
+        background-color: red;
+        border-radius: 15px;
+        cursor: pointer;
+        display: block;
+        height: var(--toogle-height);
+        position: relative;
+        width: var(--toggle-width);
+
+        .celestial-body {
+            background-color: white;
+            border-radius: calc((var(--toogle-height) - (var(--celestial-spacing) * 2)) / 2);
+            height: calc(var(--toogle-height) - (var(--celestial-spacing) * 2));
+            width: calc(var(--toogle-height) - (var(--celestial-spacing) * 2));
+            position: absolute;
+            left: var(--celestial-spacing);
+            top: var(--celestial-spacing);
+            transition: all .5s;
+        }
+    }
+
+    input {
+        display: none;
+
+        &:checked + label {
+            color: red;
+
+            .celestial-body {
+                left: calc((var(--toggle-width) - (var(--toogle-height) - (var(--celestial-spacing) * 2)) - var(--celestial-spacing)));
+            }
+        }
+    }
+}

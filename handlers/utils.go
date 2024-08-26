@@ -5,9 +5,13 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/a-h/templ"
+	"github.com/asayuki/gopherreads/config"
 	"github.com/go-playground/form"
+	"github.com/golang-jwt/jwt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var formdecoder = form.NewDecoder()
@@ -52,4 +56,15 @@ func getStructFields(dst interface{}) map[string]struct{} {
 func render(w http.ResponseWriter, r *http.Request, template templ.Component, status int) error {
 	w.WriteHeader(status)
 	return template.Render(r.Context(), w)
+}
+
+func comparePassword(hashed string, plain []byte) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hashed), plain) == nil
+}
+
+func createJWT(claims map[string]interface{}, expiration int64) (string, error) {
+	secret := []byte(config.Envs.SessionSecret)
+	claims["expires_at"] = time.Now().Add(time.Second * time.Duration(expiration)).Unix()
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims(claims))
+	return token.SignedString(secret)
 }

@@ -10,6 +10,6 @@ type User struct {
 }
 
 type UserAuth struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `form:"email" json:"email"`
+	Password string `form:"password" json:"password"`
 }

@@ -31,7 +31,7 @@ func (s *UserStore) CreateUser(user models.UserAuth) error {
 }
 
 func (s *UserStore) GetUserByField(field string, value interface{}) (*models.User, error) {
-	result := s.db.QueryRow(fmt.Sprintf("SELECT FROM users WHERE %s = ?", field), value)
+	result := s.db.QueryRow(fmt.Sprintf("SELECT * FROM users WHERE %s = ?", field), value)
 
 	user := new(models.User)
 	err := scanUser(result, user)
@@ -41,6 +41,37 @@ func (s *UserStore) GetUserByField(field string, value interface{}) (*models.Use
 	}
 
 	return user, nil
+}
+
+func (s *UserStore) GetNumUsers() (int, error) {
+	var count int
+	err := s.db.QueryRow("SELECT COUNT(*) FROM users").Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+func (s *UserStore) CheckAndCreateAdminUser(email, password string) error {
+	userCount, _ := s.GetNumUsers()
+	if userCount == 0 {
+		hashedPassword, err := hashPassword(password)
+		if err != nil {
+			return err
+		}
+
+		err = s.CreateUser(models.UserAuth{
+			Email:    email,
+			Password: hashedPassword,
+		})
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (s *UserStore) CheckAuth(email, password string) (*models.User, error) {

@@ -1,12 +1,12 @@
 package layout
 
-templ Base() {
+templ Base(contents templ.Component) {
   <!DOCTYPE html>
   <html>
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-      <link rel="stylesheet" href="/static/styles.css" />
+      <link rel="stylesheet" href="/static/styles/styles.css" />
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
@@ -18,15 +18,25 @@ templ Base() {
         <nav class="main">
           <ul>
             <li>
-              <a href="">Currently reading</a>
+              <a hx-get="/" hx-target="#content" hx-push-url="true">Currently reading</a>
             </li>
             <li>
-              <a href="">Library</a>
+              <a hx-get="/read-later" hx-target="#content" hx-push-url="true">Read later</a>
+            </li>
+            <li>
+              <a hx-get="/library" hx-target="#content" hx-push-url="true">Library</a>
             </li>
           </ul>
         </nav>
+        <theme-toggle></theme-toggle>
       </header>
-      { children... }
+      <main id="content">
+        if contents != nil {
+          @contents
+        }
+      </main>
+
+      <script type="module" src="/static/js/main.js"></script>
     </body>
   </html>
 }

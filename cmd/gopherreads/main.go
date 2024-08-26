@@ -26,6 +26,13 @@ func main() {
 	libraryStore := stores.NewLibraryStore(db)
 	userStore := stores.NewUserStore(db)
 
+	if config.Envs.DefaultEmail != "" && config.Envs.DefaultPassword != "" {
+		err := userStore.CheckAndCreateAdminUser(config.Envs.DefaultEmail, config.Envs.DefaultPassword)
+		if err != nil {
+			log.Fatal("could not create default user")
+		}
+	}
+
 	directories := models.Directory{
 		Path: "/",
 	}

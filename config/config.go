@@ -8,11 +8,15 @@ import (
 )
 
 type Config struct {
-	DBFile       string
-	LibraryPath  string
-	DataPath     string
-	HTTPAddr     string
-	ScanInterval int64
+	DBFile          string
+	LibraryPath     string
+	DataPath        string
+	HTTPAddr        string
+	ScanInterval    int64
+	DefaultEmail    string
+	DefaultPassword string
+	SessionSecret   string
+	SessionExp      int64
 }
 
 var Envs = initConfig()
@@ -21,11 +25,15 @@ func initConfig() Config {
 	godotenv.Load()
 
 	return Config{
-		DBFile:       getEnv("DB_FILE", "books.db"),
-		LibraryPath:  getEnv("LIBRARY_PATH", ""),
-		DataPath:     getEnv("DATA_PATH", "data"),
-		HTTPAddr:     getEnv("HTTP_ADDR", ":4000"),
-		ScanInterval: getEnvInt("SCAN_INTERVAL", 10),
+		DBFile:          getEnv("DB_FILE", "books.db"),
+		LibraryPath:     getEnv("LIBRARY_PATH", ""),
+		DataPath:        getEnv("DATA_PATH", "data"),
+		HTTPAddr:        getEnv("HTTP_ADDR", ":4000"),
+		ScanInterval:    getEnvInt("SCAN_INTERVAL", 10),
+		DefaultEmail:    getEnv("DEFAULT_EMAIL", ""),
+		DefaultPassword: getEnv("DEFAULT_PASSWORD", ""),
+		SessionSecret:   getEnv("SESSION_SECRET", "its-a-me-a-secretio"),
+		SessionExp:      getEnvInt("SESSION_EXP", 3600),
 	}
 }
 

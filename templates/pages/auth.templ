@@ -1,0 +1,13 @@
+package pages
+
+templ AuthView() {
+    <div hx-ext="response-targets">
+        <form hx-post="/auth" hx-target-error="#error">
+            <input type="email" name="email" />
+            <input type="password" name="password" />
+            <button>Auth</button>
+        </form>
+        <div id="error">
+        </div>
+    </div>
+}
