@@ -1,9 +1,21 @@
 [data-theme="light"] {
-    --color-bg: #FFFFFF;
+    --color-bg: #FFF8F0;
     --color-fg: #000000;
+    --primary-link: #2F6690;
+    --accent-color: rgb(205, 205, 205);
 }
 
 [data-theme="dark"] {
-    --color-bg: #000000;
+    --color-bg: #191716;
     --color-fg: #FFFFFF;
+    --primary-link: #FA7921;
+    --accent-color: gray;
 }
+
+/*
+    Darkish: 191716
+    Lightis: FFF8F0
+    Blueish: 2F6690
+    Redish: D7263D
+    Orangeish: FA7921
+*/

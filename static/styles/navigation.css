@@ -1,11 +1,24 @@
 nav.main {
+    position: relative;
+
     ul {
         display: flex;
         list-style: none;
+        gap: 20px;
         padding: 0;
+        border-bottom: 1px solid var(--accent-color);
 
         li {
+            a {
+                color: var(--primary-link);
+                display: block;
+                padding: .5rem;
+                margin-bottom: -1px;
 
+                &[data-active="true"] {
+                    border-bottom: 1px solid red;
+                }
+            }
         }
     }
 }

@@ -1,11 +1,11 @@
 root = "."
 testdata_dir = "testdata"
-tmp_dir = "tmp"
+tmp_dir = "_tmp"
 
 [build]
   args_bin = []
-  bin = "./tmp/main"
-  cmd = "templ generate && go build -o ./tmp/main ./cmd/gopherreads/main.go"
+  bin = "./_tmp/main"
+  cmd = "templ generate && go build -o ./_tmp/main ./cmd/gopherreads/main.go"
   delay = 1000
   exclude_dir = ["assets", "tmp", "_tmp", "vendor", "testdata", "node_modules", "frontend", "static"]
   exclude_file = []

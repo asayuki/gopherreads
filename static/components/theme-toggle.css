@@ -1,0 +1,163 @@
+:host {
+    --toggle-width: 54px;
+    --toggle-height: 30px;
+    --toggle-spacing: 3px;
+    --toggle-border-radius: 15px;
+    --toggle-background-start: red;
+}
+
+label {
+    background: linear-gradient(var(--toggle-background-start), var(--toggle-background-middle), var(--toggle-background-end));
+    border-radius: var(--toggle-border-radius);
+    cursor: pointer;
+    display: block;
+    height: var(--toggle-height);
+    position: relative;
+    width: var(--toggle-width);
+    transition: 
+        --toggle-background-start .5s,
+        --toggle-background-middle .5s,
+        --toggle-background-end .5s
+    ;
+}
+
+day-sky, night-sky {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+fluffy-cloud {
+    --cloud-width: 14px;
+    display: block;
+    width: var(--cloud-width);
+    aspect-ratio: 16/10;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 40"><path d="M20,30 C12,30 10,20 15,14 C22,4 28,4 30,8 C32,5 38,5 40,10 C42,10 50,10 50,20 C52,20 58,24 55,30 Z" fill="white" /></svg>');
+    background-size: cover;
+    position: absolute;
+    opacity: 1;
+    transition: right .5s, opacity .25s;
+
+    &:nth-child(1) {
+        top: 15%;
+        right: 8%;
+    }
+
+    &:nth-child(2) {
+        --cloud-width: 8px;
+        top: 10%;
+        right: 28%;
+    }
+
+    &:nth-child(3) {
+        --cloud-width: 18px;
+        top: 28%;
+        right: 18%;
+    }
+}
+
+distant-star {
+    --star-width: 8px;
+    display: block;
+    width: var(--star-width);
+    aspect-ratio: 1;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 65,30 90,35 72,53 80,80 50,70 20,80 28,53 10,35 35,30" style="fill:white;stroke-width:5;stroke:white;stroke-linejoin:round;stroke-linecap:round;"/></svg>');
+    background-size: cover;
+    position: absolute;
+    opacity: 0;
+    transition: left .5s, opacity .25s;
+
+    &:nth-child(1) {
+        top: 5%;
+        left: 50%;
+    }
+
+    &:nth-child(2) {
+        --star-width: 5px;
+        top: 30%;
+        left: 60%;
+    }
+    
+    &:nth-child(3) {
+        --star-width: 6px;
+        top: 40%;
+        left: 40%;
+    }
+
+    &:nth-child(4) {
+        --star-width: 3px;
+        top: 20%;
+        left: 70%;
+    }
+}
+
+celestial-body {
+    --mask: radial-gradient(
+        circle at 1px 1px,
+        transparent var(--celestial-radius),
+        white calc(var(--celestial-radius) + 1px) 100%
+    ) 50% 50%/100% 100% no-repeat;
+
+    display: block;
+    background-color: white;
+    border-radius: 100%;
+    height: calc(var(--toggle-height) - (var(--toggle-spacing) * 2));
+    left: var(--toggle-spacing);
+    mask: var(--mask);
+    position: absolute;
+    top: var(--toggle-spacing);
+    transition: --celestial-radius 1s cubic-bezier(0.16, 1, 0.3, 1), left .5s;
+    width: calc(var(--toggle-height) - (var(--toggle-spacing) * 2));
+}
+
+input {
+    display: none;
+
+    &:checked + label {
+        --toggle-background-start: #010811;
+        --toggle-background-middle: #132452;
+        --toggle-background-end: #010811;
+
+        celestial-body {
+            --celestial-radius: calc(var(--toggle-height) / 2);
+            left: calc((var(--toggle-width) - var(--toggle-height)) + var(--toggle-spacing));
+        }
+
+        distant-star {
+            opacity: 1;
+
+            &:nth-child(1) {
+                left: 14px;
+            }
+
+            &:nth-child(2) {
+                left: 7px;
+            }
+
+            &:nth-child(3) {
+                left: 17px;
+            }
+
+            &:nth-child(4) {
+                left: 25px;
+            }
+        }
+
+        fluffy-cloud {
+            opacity: 0;
+
+            &:nth-child(1) {
+                right: 50%;
+            }
+
+            &:nth-child(2) {
+                right: 60%;
+            }
+
+            &:nth-child(3) {
+                right: 30%;
+            }
+        }
+    }
+}

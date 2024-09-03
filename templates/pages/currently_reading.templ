@@ -1,5 +1,9 @@
 package pages
 
+import "github.com/asayuki/gopherreads/templates/components"
+
 templ CurrentlyReadingView() {
     <p>Currently reading yo</p>
+
+    @components.BookListItem()
 }

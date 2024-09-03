@@ -3,7 +3,7 @@
 @import url('./reset.css');
 @import url('./variables.css');
 @import url('./navigation.css');
-@import url('./components/theme-toggle.css');
+@import url('./layout.css');
 
 body {
     background-color: var(--color-bg);
@@ -12,3 +12,56 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+
+/*body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: "Merriweather", serif;
+    font-weight: 400;
+    font-style: normal;
+    min-height: 100%;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows:
+        auto
+        1fr
+        auto;
+    justify-items: center;
+    inline-size: min(100% - 2rem, 1280px);
+    margin: 0 auto;
+
+    & > * {
+        width: 100%;
+    }
+}
+
+body > header {
+    padding: 2.5rem 0;
+
+    theme-toggle {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+    } 
+}
+
+body > footer {
+    padding: 2.5rem 0;
+}
+
+book-list-item {
+    display: block;
+
+    #meta {
+        width: 50px;
+        display: block;
+        anchor-name: --meta;
+    }
+
+    [popover] {
+        inset: unset;
+        bottom: anchor(top);
+        left: anchor(center);
+        position-anchor: --meta;
+    }
+}*/

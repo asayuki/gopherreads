@@ -25,6 +25,9 @@ func RegisterRoutes(
 	router.Handle("/", authMiddleware(http.HandlerFunc(libhandler.BaseView)))
 	router.Handle("/library", authMiddleware(http.HandlerFunc(libhandler.LibraryView)))
 
+	// Books
+	router.Handle("/book/{id}", authMiddleware(http.HandlerFunc(libhandler.BookView)))
+
 	// Auth stuff
 	router.Handle("/auth", http.HandlerFunc(userhandler.AuthView))
 	router.HandleFunc("POST /auth", userhandler.AuthUser)
