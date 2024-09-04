@@ -31,7 +31,7 @@ func (h *UserHandler) AuthView(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("HX-Request") == "true" {
 		t = pages.AuthView()
 	} else {
-		t = layout.Base(pages.AuthView())
+		t = layout.Base(pages.AuthView(), false)
 	}
 
 	render(w, r, t, http.StatusOK)

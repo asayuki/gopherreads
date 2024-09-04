@@ -1,18 +1,22 @@
 package components
 
-templ BookListItem() {
+import "github.com/asayuki/gopherreads/models"
+
+templ BookListItem(book models.Book) {
     <book-list-item>
         <img />
         <article>
             <a href="/book/1" hx-get="/book/1" hx-target="#content" hx-push-url="true">
-                <h1>En bok</h1>
+                <h1>{ book.Name }</h1>
             </a>
             <a href="/author/1" hx-get="/author/1" hx-target="#content" hx-push-url="true">
                 <h2>En author</h2>
             </a>
             <progress value="20" max="100">0%</progress>
             <button id="meta" popovertarget="metainfo" hx-trigger="consume">Hej</button>
-            <div popover anchor="meta" id="metainfo">HEJ</div>
+            <div popover anchor="meta" id="metainfo">
+                <a href="#">Add to/remove from read later</a>
+            </div>
         </article>
     </book-list-item>
 }

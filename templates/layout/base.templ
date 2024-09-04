@@ -1,6 +1,6 @@
 package layout
 
-templ Base(contents templ.Component) {
+templ Base(contents templ.Component, navigation bool) {
   <!DOCTYPE html>
   <html>
     <head>
@@ -13,58 +13,38 @@ templ Base(contents templ.Component) {
       <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js"></script>
     </head>
     <body id="body">
-      <main class="content-grid flow">
-        <h1>Library</h1>
-        <nav class="main unflow">
-          <ul>
-            <li>
-              <a data-active="true" hx-get="/" hx-target="#content" hx-push-url="true">Currently reading</a>
-            </li>
-            <li>
-              <a hx-get="/read-later" hx-target="#content" hx-push-url="true">Read later</a>
-            </li>
-            <li>
-              <a hx-get="/library" hx-target="#content" hx-push-url="true">Library</a>
-            </li>
-          </ul>
-        </nav>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis egestas enim. Curabitur suscipit lorem id risus posuere feugiat. Suspendisse non nulla justo. Nullam quis tincidunt enim. Maecenas ac magna sed felis consequat consequat nec sed leo. Etiam quis enim et nunc tristique viverra. Nam a enim dapibus, commodo sapien et, suscipit mauris. Sed sed ex euismod, cursus neque quis, euismod lorem.</p>
+      if navigation {
+        <div class="content-grid flow">
+          <h1>Library</h1>
+          <nav class="main unflow">
+            <ul>
+              <li>
+                <a hx-get="/" hx-target="#content" hx-push-url="true">Currently reading</a>
+              </li>
+              <li>
+                <a hx-get="/read-later" hx-target="#content" hx-push-url="true">Read later</a>
+              </li>
+              <li>
+                <a hx-get="/library" hx-target="#content" hx-push-url="true">Library</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      }
+
+        if contents != nil {
+          <main id="content" class="content-grid">
+            @contents
+          </main>
+        }
+        <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis egestas enim. Curabitur suscipit lorem id risus posuere feugiat. Suspendisse non nulla justo. Nullam quis tincidunt enim. Maecenas ac magna sed felis consequat consequat nec sed leo. Etiam quis enim et nunc tristique viverra. Nam a enim dapibus, commodo sapien et, suscipit mauris. Sed sed ex euismod, cursus neque quis, euismod lorem.</p>
         <p>Cras condimentum orci est, in viverra est molestie in. Fusce vitae sapien non ligula varius fringilla. Praesent vitae porta lacus, at aliquet tortor. Vestibulum commodo vestibulum turpis. Nam id purus malesuada, auctor lorem sed, tincidunt lacus. Fusce pretium tellus sed accumsan volutpat. Aliquam vel risus dignissim, congue massa sed, ultricies augue. Etiam sed nisi convallis, convallis quam id, porttitor libero. Etiam neque dolor, semper at velit sit amet, tristique consectetur quam.</p>
         <p class="breakout">Nullam porta justo tincidunt, dictum augue ac, feugiat velit. Duis porta ut elit in sodales. In vestibulum interdum odio et euismod. Maecenas non felis sed odio dictum tincidunt vitae in nibh. Quisque hendrerit tincidunt libero a sollicitudin. Phasellus ut enim eu est egestas accumsan. Ut ut viverra sapien, laoreet aliquam ex. Mauris sit amet luctus velit, id mollis erat. Fusce eu diam sit amet nisl porttitor vestibulum. Nulla rhoncus aliquam magna, a rhoncus tortor iaculis nec. Maecenas sagittis, eros sit amet scelerisque molestie, elit tellus ornare justo, nec aliquet purus tellus eu libero. Nunc scelerisque mauris et sem eleifend, eu malesuada justo semper. Integer cursus tristique pharetra. Donec ornare lobortis justo, quis ultricies leo pretium sit amet.</p>
         <p>Mauris sit amet sodales urna. Ut fermentum dolor iaculis lacinia congue. In mattis neque porttitor imperdiet mattis. Fusce ultrices dapibus ex mollis commodo. Nullam sapien ex, accumsan id orci ac, eleifend dapibus enim. Etiam nec dolor non urna mattis mollis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam varius, orci non suscipit finibus, lacus elit blandit massa, eget condimentum ligula tellus vitae felis. Proin quis neque gravida, luctus ligula et, volutpat purus.</p>
         <div class="full-width">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis egestas enim. Curabitur suscipit lorem id risus posuere feugiat. Suspendisse non nulla justo. Nullam quis tincidunt enim. Maecenas ac magna sed felis consequat consequat nec sed leo. Etiam quis enim et nunc tristique viverra. Nam a enim dapibus, commodo sapien et, suscipit mauris. Sed sed ex euismod, cursus neque quis, euismod lorem.</p>
         </div>
-        <p>Cras condimentum orci est, in viverra est molestie in. Fusce vitae sapien non ligula varius fringilla. Praesent vitae porta lacus, at aliquet tortor. Vestibulum commodo vestibulum turpis. Nam id purus malesuada, auctor lorem sed, tincidunt lacus. Fusce pretium tellus sed accumsan volutpat. Aliquam vel risus dignissim, congue massa sed, ultricies augue. Etiam sed nisi convallis, convallis quam id, porttitor libero. Etiam neque dolor, semper at velit sit amet, tristique consectetur quam.</p>
-      </main>
-      <main id="content">
-      </main>
-      <!--<header>
-        <h1>Library</h1>
-        <nav class="main">
-          <ul>
-            <li>
-              <a hx-get="/" hx-target="#content" hx-push-url="true">Currently reading</a>
-            </li>
-            <li>
-              <a hx-get="/read-later" hx-target="#content" hx-push-url="true">Read later</a>
-            </li>
-            <li>
-              <a hx-get="/library" hx-target="#content" hx-push-url="true">Library</a>
-            </li>
-          </ul>
-        </nav>
-        
-      </header>
-      <main id="content">
-        if contents != nil {
-          @contents
-        }
-      </main>
-      <footer>
-        Some footer content
-      </footer>
-      -->
+        <p>Cras condimentum orci est, in viverra est molestie in. Fusce vitae sapien non ligula varius fringilla. Praesent vitae porta lacus, at aliquet tortor. Vestibulum commodo vestibulum turpis. Nam id purus malesuada, auctor lorem sed, tincidunt lacus. Fusce pretium tellus sed accumsan volutpat. Aliquam vel risus dignissim, congue massa sed, ultricies augue. Etiam sed nisi convallis, convallis quam id, porttitor libero. Etiam neque dolor, semper at velit sit amet, tristique consectetur quam.</p>-->
       <theme-toggle></theme-toggle>
       <script type="module" src="/static/js/main.js"></script>
       <script type="module" src="/static/components/theme-toggle.js"></script>

@@ -45,6 +45,38 @@ func (s *LibraryStore) GetBookByPath(path string) (*models.Book, error) {
 	return book, nil
 }
 
+func (s *LibraryStore) GetBooks() ([]*models.Book, error) {
+	rows, err := s.db.Query(`
+		SELECT
+			b.id,
+			b.path,
+			b.full_path,
+			b.name,
+			b.type,
+			b.scanned_at,
+			b.last_scanned_at,
+			COALESCE(bm.title, '') as title,
+			COALESCE(bm.description, '') as description,
+			COALESCE(bm.cover, '') as cover,
+			COALESCE(bm.genre, '') as genre,
+			COALESCE(bm.author, '') as author
+		FROM books b
+		LEFT JOIN bookmeta bm on b.id = bm.book_id
+	`)
+
+	if err != nil {
+		return nil, err
+	}
+
+	books, err := scanBooks(rows)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return books, nil
+}
+
 func (s *LibraryStore) GetBooksByPath(path string) ([]*models.Book, error) {
 	rows, err := s.db.Query(`
 		SELECT

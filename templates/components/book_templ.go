@@ -8,7 +8,9 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func BookListItem() templ.Component {
+import "github.com/asayuki/gopherreads/models"
+
+func BookListItem(book models.Book) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -26,7 +28,20 @@ func BookListItem() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<book-list-item><img><article><a href=\"/book/1\" hx-get=\"/book/1\" hx-target=\"#content\" hx-push-url=\"true\"><h1>En bok</h1></a> <a href=\"/author/1\" hx-get=\"/author/1\" hx-target=\"#content\" hx-push-url=\"true\"><h2>En author</h2></a> <progress value=\"20\" max=\"100\">0%</progress> <button id=\"meta\" popovertarget=\"metainfo\" hx-trigger=\"consume\">Hej</button><div popover anchor=\"meta\" id=\"metainfo\">HEJ</div></article></book-list-item>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<book-list-item><img><article><a href=\"/book/1\" hx-get=\"/book/1\" hx-target=\"#content\" hx-push-url=\"true\"><h1>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(book.Name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/book.templ`, Line: 10, Col: 31}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1></a> <a href=\"/author/1\" hx-get=\"/author/1\" hx-target=\"#content\" hx-push-url=\"true\"><h2>En author</h2></a> <progress value=\"20\" max=\"100\">0%</progress> <button id=\"meta\" popovertarget=\"metainfo\" hx-trigger=\"consume\">Hej</button><div popover anchor=\"meta\" id=\"metainfo\"><a href=\"#\">Add to/remove from read later</a></div></article></book-list-item>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -47,9 +62,9 @@ func BookView() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var2 == nil {
-			templ_7745c5c3_Var2 = templ.NopComponent
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<book-view><img><article><h1>En bok</h1><h2>En author</h2><p>Some description about the book.</p><div class=\"action-buttons\"><button>Add to/remove from read later</button> <button>Start reading</button></div></article></book-view>")

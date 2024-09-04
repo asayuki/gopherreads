@@ -1,5 +1,11 @@
 package pages
 
-templ LibraryView() {
-    <div>Library view</div>
+import "github.com/asayuki/gopherreads/models"
+import "github.com/asayuki/gopherreads/templates/components"
+
+templ LibraryView(books []*models.Book) {
+
+    for _, book := range books  {
+        @components.BookListItem(*book)
+    }
 }

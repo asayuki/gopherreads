@@ -10,6 +10,7 @@ nav.main {
 
         li {
             a {
+                cursor: pointer;
                 color: var(--primary-link);
                 display: block;
                 padding: .5rem;
