@@ -29,10 +29,13 @@ func Scanner(rootpath string) ([]*models.Book, error) {
 					name := info.Name()
 					// fmt.Println(strings.TrimPrefix(path, rootpath))
 					books = append(books, &models.Book{
-						Name:     strings.TrimSuffix(name, filepath.Ext(name)),
+						// Name:     strings.TrimSuffix(name, filepath.Ext(name)),
 						Path:     strings.TrimPrefix(strings.TrimSuffix(path, name), rootpath),
 						FullPath: strings.TrimPrefix(path, rootpath),
 						Type:     strings.TrimPrefix(filepath.Ext(name), "."),
+						Metadata: models.BookMeta{
+							Title: strings.TrimSuffix(name, filepath.Ext(name)),
+						},
 					})
 				}
 			}
@@ -61,10 +64,13 @@ func Scanner(rootpath string) ([]*models.Book, error) {
 				name := info.Name()
 				// (strings.TrimPrefix(path, rootpath))
 				books = append(books, &models.Book{
-					Name:     name,
+					// Name:     name,
 					Path:     strings.TrimPrefix(strings.TrimSuffix(path, name), rootpath),
 					FullPath: strings.TrimPrefix(path, rootpath),
 					Type:     "folder",
+					Metadata: models.BookMeta{
+						Title: name,
+					},
 				})
 			}
 

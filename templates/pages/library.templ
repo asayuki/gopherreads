@@ -1,11 +1,12 @@
 package pages
 
 import "github.com/asayuki/gopherreads/models"
-import "github.com/asayuki/gopherreads/templates/components"
+// import "github.com/asayuki/gopherreads/templates/components"
 
 templ LibraryView(books []*models.Book) {
 
     for _, book := range books  {
-        @components.BookListItem(*book)
+        <p>{ book.Metadata.Title }</p>
+        // @components.BookListItem(book)
     }
 }

@@ -4,6 +4,6 @@ import "github.com/asayuki/gopherreads/models"
 
 templ BookItem(book models.Book) {
     <book-item>
-        { book.Name }
+        { book.Metadata.Title }
     </book-item>
 }

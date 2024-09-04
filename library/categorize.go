@@ -25,7 +25,12 @@ func Categorize(librarystore stores.LibraryStore, directories *models.Directory)
 		_, err := librarystore.GetBookByPath(book.FullPath)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				librarystore.InsertBook(*book)
+				id, err := librarystore.InsertBook(*book)
+				fmt.Println(id)
+
+				if err == nil {
+					librarystore.InsertBookMeta(id, book.Metadata)
+				}
 			}
 		}
 	}

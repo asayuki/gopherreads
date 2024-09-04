@@ -2,12 +2,12 @@ package components
 
 import "github.com/asayuki/gopherreads/models"
 
-templ BookListItem(book models.Book) {
+templ BookListItem(book *models.Book) {
     <book-list-item>
         <img />
         <article>
             <a href="/book/1" hx-get="/book/1" hx-target="#content" hx-push-url="true">
-                <h1>{ book.Name }</h1>
+                <h1>{ book.Metadata.Title }</h1>
             </a>
             <a href="/author/1" hx-get="/author/1" hx-target="#content" hx-push-url="true">
                 <h2>En author</h2>

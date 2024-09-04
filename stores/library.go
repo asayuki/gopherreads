@@ -21,7 +21,6 @@ func (s *LibraryStore) GetBookByPath(path string) (*models.Book, error) {
 			b.id,
 			b.path,
 			b.full_path,
-			b.name,
 			b.type,
 			b.scanned_at,
 			b.last_scanned_at,
@@ -51,7 +50,6 @@ func (s *LibraryStore) GetBooks() ([]*models.Book, error) {
 			b.id,
 			b.path,
 			b.full_path,
-			b.name,
 			b.type,
 			b.scanned_at,
 			b.last_scanned_at,
@@ -70,6 +68,7 @@ func (s *LibraryStore) GetBooks() ([]*models.Book, error) {
 
 	books, err := scanBooks(rows)
 
+	fmt.Println(books[0].Metadata)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +82,6 @@ func (s *LibraryStore) GetBooksByPath(path string) ([]*models.Book, error) {
 			b.id,
 			b.path,
 			b.full_path,
-			b.name,
 			b.type,
 			b.scanned_at,
 			b.last_scanned_at,
@@ -115,9 +113,9 @@ func (s *LibraryStore) GetBooksByPath(path string) ([]*models.Book, error) {
 func (s *LibraryStore) InsertBook(book models.Book) (int64, error) {
 	result, err := s.db.Exec(`
 		INSERT INTO books (
-			path, full_path, name, type
-		) VALUES (?, ?, ?, ?)
-	`, book.Path, book.FullPath, book.Name, book.Type)
+			path, full_path, type
+		) VALUES (?, ?, ?)
+	`, book.Path, book.FullPath, book.Type)
 	if err != nil {
 		fmt.Println(err)
 		return 0, err
@@ -131,12 +129,12 @@ func (s *LibraryStore) InsertBook(book models.Book) (int64, error) {
 	return id, nil
 }
 
-func (s *LibraryStore) InsertBookMeta(id int, bookmeta models.BookMeta) error {
+func (s *LibraryStore) InsertBookMeta(id int64, bookmeta models.BookMeta) error {
 	_, err := s.db.Exec(`
 		INSERT INTO bookmeta (
 			book_id, title, description, cover, genre, author
 		) VALUES(?, ?, ?, ?, ?, ?)
-	`, id, bookmeta.Title, bookmeta.Description, bookmeta.Cover, bookmeta.Cover, bookmeta.Genre, bookmeta.Author)
+	`, id, bookmeta.Title, bookmeta.Description, bookmeta.Cover, bookmeta.Genre, bookmeta.Author)
 
 	return err
 }
@@ -147,7 +145,7 @@ func (s *LibraryStore) UpdateBookMeta(id, bookmeta models.BookMeta) error {
 			title, description, cover, genre, author
 		), VALUES(?, ?, ?, ?, ?)
 		WHERE book_id = ?
-	`, bookmeta.Title, bookmeta.Description, bookmeta.Cover, bookmeta.Cover, bookmeta.Genre, bookmeta.Author, id)
+	`, bookmeta.Title, bookmeta.Description, bookmeta.Cover, bookmeta.Genre, bookmeta.Author, id)
 
 	return err
 }
@@ -157,7 +155,6 @@ func scanBook(row *sql.Row, book *models.Book) error {
 		&book.ID,
 		&book.Path,
 		&book.FullPath,
-		&book.Name,
 		&book.Type,
 		&book.ScannedAt,
 		&book.LastScannedAt,
@@ -179,15 +176,14 @@ func scanBooks(rows *sql.Rows) ([]*models.Book, error) {
 			&book.ID,
 			&book.Path,
 			&book.FullPath,
-			&book.Name,
 			&book.Type,
 			&book.ScannedAt,
 			&book.LastScannedAt,
-			&book.Metadata.Author,
-			&book.Metadata.Cover,
-			&book.Metadata.Description,
-			&book.Metadata.Genre,
 			&book.Metadata.Title,
+			&book.Metadata.Description,
+			&book.Metadata.Cover,
+			&book.Metadata.Genre,
+			&book.Metadata.Author,
 		)
 		if err != nil {
 			return nil, err

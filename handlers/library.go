@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/a-h/templ"
@@ -50,6 +51,10 @@ func (h *LibraryHandler) CurrentlyReadingView(w http.ResponseWriter, r *http.Req
 func (h *LibraryHandler) LibraryView(w http.ResponseWriter, r *http.Request) {
 
 	books, _ := h.library.GetBooks()
+
+	for _, item := range books {
+		fmt.Println(item.Metadata.Title)
+	}
 
 	// todo: get user id and use it whilst fetching books
 	// so we can get the current reading status somehow
